@@ -128,6 +128,7 @@ ENV/
 env.bak/
 venv.bak/
 config.yml
+o365_token.txt
 
 # Spyder project settings
 .spyderproject

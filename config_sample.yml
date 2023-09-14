@@ -1,0 +1,23 @@
+src_mail: 'abc@gmail.com'
+recipients: 'recipients.csv'
+mail_subject: 'mail_subject.txt'
+mail_body: 'mail_body.txt'
+mail_attachments:
+  - attachment1.txt
+  - attachment2.txt
+
+min_delay: 20
+max_delay: 30
+work_start: '8:00'
+work_end: '17:30'
+
+# azure parameters
+client_id: 'xxxxxxxxxx'
+client_secret: 'xxxxxxxxx'
+tenant_id: 'xxxxxxxxxxx'
+# token_backend = FileSystemTokenBackend(token_path='.', token_filename='o365_token.txt')
+# token_backend = FileSystemTokenBackend()
+redict_url: 'https://login.microsoftonline.com/common/oauth2/nativeclient'
+
+
+

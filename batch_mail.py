@@ -2,6 +2,7 @@ import time
 import random
 import yaml
 import csv
+import datetime as dt
 
 from O365 import Account, FileSystemTokenBackend, Message
 
@@ -51,19 +52,34 @@ def mass_send(account, cfg):
     with open(cfg['mail_body'], 'r') as fp:
         mail_body_raw = fp.read()
 
+    work_start = dt.datetime.strptime(cfg['work_start'], '%H:%M').time()
+    work_end = dt.datetime.strptime(cfg['work_end'], '%H:%M').time()
 
     mailbox = account.mailbox(resource=cfg['src_mail'])
-    for k, (title, name, ds_mail_addr) in enumerate(recipients):
-        print(f"No. {k} Sending to {ds_mail_addr}...")
-        m = mailbox.new_message()
-        m.to.add(ds_mail_addr)
-        m.subject = mail_subject
-        m.body = f"{title} {name}, <br><br> {mail_body_raw}"
-        m.attachments.add(cfg['mail_attachments'])
-        m.send()
-        time.sleep(random.randint(10, 20))
-        print('ok')        
-    print(f'{k} emails sent successfully.')
+    # for k, (title, name, ds_mail_addr) in enumerate(recipients):
+    iter_recipients = iter(recipients)
+    k = 1
+    while True:
+        curtime = dt.datetime.now().time()
+        if curtime < work_start or curtime > work_end:
+            print('not in work time')
+        else:
+            title, name, ds_mail_addr = next(iter_recipients)
+            print(f"No. {k} Sending to {ds_mail_addr}...")
+            m = mailbox.new_message()
+            m.to.add(ds_mail_addr)
+            m.subject = mail_subject
+            m.body = f"{title} {name}, <br><br> {mail_body_raw}"
+            m.attachments.add(cfg['mail_attachments'])
+            m.send()
+            k += 1
+            if k > len(recipients):
+                break
+        delay = random.randint(cfg['min_delay'], cfg['max_delay'])
+        print(f'Sleep {delay} seconds...')
+        time.sleep(delay)
+        # print('ok')        
+    print(f'{k-1} emails sent successfully.')
 
 
 if __name__ == '__main__':
