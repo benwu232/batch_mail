@@ -1,5 +1,5 @@
 # Batch Mail
-## -- a tool for batch sending mail based on pyton-o365
+##  A tool for batch sending mails based on pyton-o365, which supporting Microsoft business mail
 
 - It can send a large number of emails with customization.
 - It it based on pyton-o365 to call Office365 api to achieve aucentication on microsoft office.
